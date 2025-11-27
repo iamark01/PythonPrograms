@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+<head>
+    <title>FastAPI Website</title>
+    <script src="{{url_for('static', path='hello.js')}}"></script>
+</head>
+
+<body onload="startTime()">
+    <img src="{{url_for('static', path='fa-icon.png')}}" alt="Image not found" width="100" />
+    <div id="time"
+        style="float: right;text-align: center;width: 100px;border: 2px solid black;border-radius: 20px;font-weight: bold;">
+    </div>
+    <h1>
+        <div id="ttl">{{ name }}</div>
+    </h1>
+</body>
+
+</html>

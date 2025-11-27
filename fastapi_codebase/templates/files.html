@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Uploaded files list</title>
+</head>
+
+<body>
+    <h1>Files uploaded:</h1>
+    <ol>
+        {% for file in files %}
+        <li><a href="{{url_for('read_item', name=file)}}">{{ file }}</a></li>
+        {% endfor %}
+    </ol>
+</body>
+
+</html>
