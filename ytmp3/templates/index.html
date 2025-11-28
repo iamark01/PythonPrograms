@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>YouTube to MP3 Converter</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body class="p-4">
+    <div class="container container-box">
+        <h2 class="text-center mb-4">YouTube to MP3 Converter</h2>
+
+        <div class="drop-box mb-3" id="dropBox">
+            Drag & Drop YouTube URL here
+        </div>
+
+        <div class="input-group mb-3">
+            <input type="text" id="urlInput" class="form-control mb-3" placeholder="Enter YouTube URL">
+            <button class="btn btn-primary mb-3" onclick="fetchVideoInfo()">Fetch Info</button>
+        </div>
+
+        <div id="videoInfo" class="d-none mb-3">
+            <img id="thumb" style="width:200px; border-radius:10px;">
+            <h4 id="title"></h4>
+            <p>Duration: <span id="duration"></span> sec</p>
+        </div>
+
+        <button class="btn btn-success d-none" id="convertBtn" onclick="convertVideo()">Convert to MP3</button>
+
+        <div class="progress mt-3 d-none" id="progressBarContainer">
+            <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%">
+            </div>
+        </div>
+
+        <div class="mt-4" id="downloadSection"></div>
+
+        <a href="/history" class="btn btn-link mt-4">View Download History</a>
+    </div>
+    <script>
+        const dropBox = document.getElementById("dropBox");
+        dropBox.addEventListener("dragover", e => e.preventDefault());
+        dropBox.addEventListener("drop", e => {
+            e.preventDefault();
+            document.getElementById("urlInput").value = e.dataTransfer.getData("text/plain");
+        });
+
+        async function fetchVideoInfo() {
+            const url = urlInput.value;
+            if (!url) return alert("Enter a YouTube URL");
+
+            const formData = new FormData();
+            formData.append("url", url);
+
+            const res = await fetch("/get_info", { method: "POST", body: formData });
+            const data = await res.json();
+
+            title.innerHTML = data.title;
+            duration.innerHTML = data.duration;
+            thumb.src = data.thumbnail;
+
+            videoInfo.classList.remove("d-none");
+            convertBtn.classList.remove("d-none");
+        }
+
+        async function convertVideo() {
+            const url = urlInput.value;
+            if (!url) return;
+
+            progressBarContainer.classList.remove("d-none");
+            progressBar.style.width = "40%";
+
+            const formData = new FormData();
+            formData.append("url", url);
+
+            const res = await fetch("/convert", { method: "POST", body: formData });
+            const data = await res.json();
+
+            progressBar.style.width = "100%";
+
+            downloadSection.innerHTML = `
+        <a class="btn btn-success mt-3" href="${data.download}">Download MP3</a>
+    `;
+            progressBarContainer.classList.add("d-none");
+        }
+    </script>
+</body>
+
+</html>

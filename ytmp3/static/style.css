@@ -1,0 +1,21 @@
+body {
+    background: #f8f9fa;
+}
+
+.container-box {
+    max-width: 600px;
+    margin-top: 40px;
+}
+
+.drop-box {
+    border: 2px dashed #888;
+    padding: 40px;
+    text-align: center;
+    border-radius: 10px;
+    font-size: 18px;
+    color: #555;
+}
+
+.drop-box:hover {
+    background: #f2f2f2;
+}
