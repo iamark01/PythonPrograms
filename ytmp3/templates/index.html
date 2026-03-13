@@ -61,6 +61,8 @@
 
             videoInfo.classList.remove("d-none");
             convertBtn.classList.remove("d-none");
+
+            downloadSection.innerHTML = ``;
         }
 
         async function convertVideo() {
@@ -78,9 +80,14 @@
 
             progressBar.style.width = "100%";
 
-            downloadSection.innerHTML = `
-        <a class="btn btn-success mt-3" href="${data.download}">Download MP3</a>
-    `;
+            if(data.success) {
+                downloadSection.innerHTML = `
+                <a class="btn btn-success mt-3" href="${data.download}">Download MP3</a>
+                `;
+            } else {
+                downloadSection.innerHTML = `
+                <p>Conversion failed: "${data.error}"</p>`;
+            }
             progressBarContainer.classList.add("d-none");
         }
     </script>
